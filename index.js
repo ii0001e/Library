@@ -32,7 +32,16 @@ app.get('/libraries/:id', (req, res) => {
     res.send(libraries[req.params.id-1]);
 });
 
-
+add.post('/libraries', (req, res) => {
+    games.push({
+        id: games.length + 1,
+        name: req.body.name,
+        address: req.body.address,
+        openingTime: req.body.openingTime,
+        inactive: req.body.inactive
+    });
+    res.end();
+});
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(port, () => {
