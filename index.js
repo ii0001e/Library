@@ -52,6 +52,14 @@ app.post('/libraries', (req, res) => {
                     .send(Library);
 });
 
+app.delete('/libraries/:id', (req, res) => {
+    if (typeof libraries[req.params.id-1] === 'undefined'){
+        return res.status(404).send({error: "Library is not found"});
+    }
+    libraries.splice(req.params.id-1, 1);
+    res.status(204).send({error: "Not content"});
+});
+
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(port, () => {
     console.log(`API up at: http://localhost:${port}`);

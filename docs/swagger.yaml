@@ -25,6 +25,15 @@ paths:
             summary: Get a list of all libraries.
             description: Return a list of all libraries in API.
         post:
+            requestBody:
+                description: 'A new library to be created '
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/new-library'
+                required: true
+            tags:
+                - library
             parameters:
                 -
                     name: name
@@ -42,8 +51,17 @@ paths:
                     required: true
             responses:
                 '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/new-library'
                     description: Library has been added
-            description: add book
+                '400':
+                    content:
+                        application/json: {}
+                    description: 'One or all params are missing. '
+            summary: Create Library
+            description: Create a new library
     '/libraries/{id}':
         get:
             tags:
@@ -61,6 +79,75 @@ paths:
                 '200':
                     description: all details of library
                 '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
                     description: library not found
             summary: Get full info of library by ID
             description: Get full info of library by ID
+        delete:
+            parameters:
+                -
+                    name: id
+                    schema:
+                        type: array
+                        items:
+                            type: integer
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    description: Library was deleted.
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Library /w+ was not found:
+                                    value: |-
+                                        {
+                                            "error" = "Library \\w+ was not found in library array."
+                                        }
+                    description: Library not found.
+            summary: Delete book by ID
+            description: Delete book by ID
+components:
+    schemas:
+        new-library:
+            description: ''
+            required:
+                - name
+                - aadress
+                - openingtime
+                - inactive
+            type: object
+            properties:
+                name:
+                    description: ''
+                    type: string
+                aadress:
+                    description: ''
+                    type: string
+                openingtime:
+                    description: ''
+                    type: string
+                inactive:
+                    description: ''
+                    type: boolean
+            example: |-
+                {
+                    id: 1, 
+                    name: 'Mustamäe raamatukogu', 
+                    address: 'Määrä 1, 123456', 
+                    openingTime: "9-17", 
+                    inactive: 1
+                    
+                }
+        error:
+            description: |-
+                {
+                    "error": "Error Message."
+                }
+            type: object
