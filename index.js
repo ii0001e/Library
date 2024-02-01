@@ -92,6 +92,10 @@ app.patch('/libraries/:id', (req, res) => {
 });
 
 
+app.get('/libraries', (req, res) => {
+    res.send(['Mustamäe','Lasnamäe','Kopli','Kristiine']);
+});
+
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(port, () => {
     console.log(`API up at: http://localhost:${port}`);
