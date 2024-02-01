@@ -23,9 +23,23 @@ const libraries = [
     {id: 8, name: 'Keila raamatukogu', address: 'Määrä 8, 123456', openingTime: "9-17", inactive: 0},
 ]
 
+const books = [
+    {id: 1, name: 'The hobbit', genre_name: 'Romance'},
+    {id: 2, name: 'Slinky Malinki', genre_name: 'Romance'},
+    {id: 3, name: 'How to lie with Statistics', genre_name: 'Mystery'},
+    {id: 4, name: 'My cat like to hide in Boxes', genre_name: 'Thriller'},
+    {id: 5, name: 'Mechanical Harry', genre_name: 'Documentary'},
+    {id: 6, name: 'Mallinson Rendel', genre_name: 'Biography'},
+    {id: 7, name: 'W. W. Norton', genre_name: 'Biography'},
+]
+
 app.get('/libraries', (req, res) => {
     res.send(libraries);
 });
+
+app.get('/books', (req, res) => {
+    res.send(books);
+}); 
 
 app.get('/libraries/:id', (req, res) => {
     if (typeof libraries[req.params.id-1] === 'undefined'){
@@ -33,6 +47,7 @@ app.get('/libraries/:id', (req, res) => {
     }
     res.send(libraries[req.params.id-1]);
 });
+
 
 
 app.post('/libraries', (req, res) => {
