@@ -86,7 +86,37 @@ paths:
                     description: library not found
             summary: Get full info of library by ID
             description: Get full info of library by ID
+        put:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/new-library'
+                required: true
+            tags:
+                - library
+            parameters:
+                -
+                    name: id
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '203':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                    description: Updated library
+            operationId: id
+            summary: Update existing library
+            description: Update library by id
         delete:
+            tags:
+                - library
             parameters:
                 -
                     name: id
@@ -98,6 +128,10 @@ paths:
                     required: true
             responses:
                 '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/delete-library'
                     description: Library was deleted.
                 '404':
                     content:
@@ -112,7 +146,7 @@ paths:
                                         }
                     description: Library not found.
             summary: Delete book by ID
-            description: Delete book by ID
+            description: Remove library from array by ID
 components:
     schemas:
         new-library:
@@ -151,3 +185,24 @@ components:
                     "error": "Error Message."
                 }
             type: object
+        delete-library:
+            description: ''
+            required:
+                - id
+            type: object
+            properties:
+                id:
+                    description: |-
+                        {
+                            "id": 1
+                        }
+                    type: integer
+        update-library:
+            description: Id for library to be uptated.
+            type: object
+            properties:
+                id:
+                    description: |-
+                        {
+                            "id": 1
+                        }
