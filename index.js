@@ -24,7 +24,7 @@ const libraries = [
 ]
 
 const books = [
-    {id: 1, name: 'The hobbit', genre_name: 'Romance'},
+    {id: 1, name: 'The hobbit', genre_name: 'Romance'},                                       
     {id: 2, name: 'Slinky Malinki', genre_name: 'Romance'},
     {id: 3, name: 'How to lie with Statistics', genre_name: 'Mystery'},
     {id: 4, name: 'My cat like to hide in Boxes', genre_name: 'Thriller'},
@@ -48,7 +48,12 @@ app.get('/libraries/:id', (req, res) => {
     res.send(libraries[req.params.id-1]);
 });
 
-
+app.get('/books/:id', (req, res) => {
+    if (typeof books[req.params.id-1] === 'undefined'){
+        return res.status(404).send({error: "Book is not found"});
+    }
+    res.send(books[req.params.id-1]);
+});
 
 app.post('/libraries', (req, res) => {
     if (!req.body.name ||!req.body.address ||!req.body.openingTime ||!req.body.inactive){
@@ -67,13 +72,13 @@ app.post('/libraries', (req, res) => {
                     .send(Library);
 });
 
-app.delete('/libraries/:id', (req, res) => {
-    if (typeof libraries[req.params.id-1] === 'undefined'){
-        return res.status(404).send({error: "Library is not found"});
-    }
-    libraries.splice(req.params.id-1, 1);
-    res.status(204).send({error: "Not content"});
-});
+    app.delete('/libraries/:id', (req, res) => {
+        if (typeof libraries[req.params.id-1] === 'undefined'){
+            return res.status(404).send({error: "Library is not found"});
+        }
+        libraries.splice(req.params.id-1, 1);
+        res.status(204).send({error: "Not content"});
+    });
 
 app.patch('/libraries/:id', (req, res) => {
     let restult = libraries[req.params.id-1];
