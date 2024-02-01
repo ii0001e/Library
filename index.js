@@ -103,15 +103,22 @@ app.get('/libraries/:id', (req, res) => {
     res.send(libraries[req.params.id-1]);
 });
 
-add.post('/libraries', (req, res) => {
-    games.push({
-        id: games.length + 1,
+
+app.post('/libraries', (req, res) => {
+    if (!req.body.name ||!req.body.address ||!req.body.openingTime ||!req.body.inactive){
+        return res.status(400).send({error: "One or all params are missing"});
+    }
+    let Library = {
+        id: libraries.length + 1,
         name: req.body.name,
         address: req.body.address,
         openingTime: req.body.openingTime,
         inactive: req.body.inactive
-    });
-    res.end();
+    };
+    libraries.push(Library);
+    res.status(201)
+                    .location(`${getBaseUrl(req)}/libraries/${libraries.length}`)
+                    .send(Library);
 });
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
