@@ -63,29 +63,44 @@ app.delete('/books/:id', (req, res) => {
     res.status(204).send({error: "Not content"});
 });
 
-app.post('/libraries', (req, res) => {
-    if (!req.body.name ||!req.body.address ||!req.body.openingTime ||!req.body.inactive){
-        return res.status(400).send({error: "One or all params are missing"});
-    }
-    let Library = {
-        id: libraries.length + 1,
-        name: req.body.name,
-        address: req.body.address,
-        openingTime: req.body.openingTime,
-        inactive: req.body.inactive
-    };
-    libraries.push(Library);
-    res.status(201)
-                    .location(`${getBaseUrl(req)}/libraries/${libraries.length}`)
-                    .send(Library);
-});
-
     app.delete('/libraries/:id', (req, res) => {
         if (typeof libraries[req.params.id-1] === 'undefined'){
             return res.status(404).send({error: "Library is not found"});
         }
         libraries.splice(req.params.id-1, 1);
         res.status(204).send({error: "Not content"});
+    });
+
+    app.post('/libraries', (req, res) => {
+        if (!req.body.name ||!req.body.address ||!req.body.openingTime ||!req.body.inactive){
+            return res.status(400).send({error: "One or all params are missing"});
+        }
+        let Library = {
+            id: libraries.length + 1,
+            name: req.body.name,
+            genre_name: req.body.genre_name,
+        };
+        libraries.push(Library);
+        res.status(201)
+                        .location(`${getBaseUrl(req)}/libraries/${libraries.length}`)
+                        .send(Library);
+    });
+
+    app.post('/books', (req, res) => {
+        if (!req.body.name ||!req.body.address ||!req.body.openingTime ||!req.body.inactive){
+            return res.status(400).send({error: "One or all params are missing"});
+        }
+        let books = {
+            id: books.length + 1,
+            name: req.body.name,
+            address: req.body.address,
+            openingTime: req.body.openingTime,
+            inactive: req.body.inactive
+        };
+        books.push(Books);
+        res.status(201)
+                        .location(`${getBaseUrl(req)}/books/${books.length}`)
+                        .send(Books);
     });
 
 app.patch('/libraries/:id', (req, res) => {
