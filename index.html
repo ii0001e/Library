@@ -15,10 +15,46 @@
 
         </tr>
         <tr v-for="Library in libraries">
-            <td>{{Library.name}}</rd>
+            <td @click="getLib(Library.id)">{{Library.name}}</rd>
             <td>{{Library.address}}</rd>
         </tr>
     </table>
+    <div id="LibInModal" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismmiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                    <tr>
+                        <th>ID</th>
+                        <td>{{LibInModal.id}}</td>
+                    </tr>
+                    <tr>
+                        <th>                            Name                        </th>
+                        <td>{{LibInModal.name}}</td>
+                    </tr>
+                    <tr>
+                        <th>                            Address                        </th>
+                        <td>{{LibInModal.address}}</td>
+                    </tr>
+                    <tr>
+                        <th>Open Time</th>
+                        <td>{{LibInModal.openingTime}}</td>
+                    </tr>
+                    <tr>
+                        <th>In active?</th>
+                        <td>{{LibInModal.inactive}}</td>
+                    </tr>
+                </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
@@ -31,11 +67,19 @@
     const vue = Vue.createApp({
         data() {
             return {
+                LibInModal: {name: null},
                 libraries: []
             }
         },
             async created() {
                 this.libraries = await (await fetch("http://localhost:8080/libraries/")).json();
-            }        
+            },
+            methods: {
+                getLib: async function(id){
+                    this.LibInModal = await (await fetch("http://localhost:8080/libraries/" + id)).json();
+                    let LibInModal = new bootstrap.Modal(document.getElementById('LibInModal', {}))
+                    LibInModal.show();
+                }   
+            }                
     }).mount(`#app`)
 </script>
