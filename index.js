@@ -129,6 +129,23 @@ app.delete('/libraries/:id', (req, res) => {
     res.status(204).send({error: "Not content"});
 });
 
+app.patch('/libraries/:id', (req, res) => {
+    let restult = libraries[req.params.id-1];
+    if (typeof restult === 'undefined'){
+        return res.status(404).send({error: "Library is not found"});
+    }
+    if (!req.body.name ||!req.body.address ||!req.body.openingTime ||!req.body.inactive){
+        return res.status(400).send({error: "One or all params are missing"});
+    }
+    restult.name = req.body.name;
+    restult.address = req.body.address;
+    restult.openingTime = req.body.openingTime;
+    restult.inactive = req.body.inactive;
+    
+    res.status(203).send(restult);
+});
+
+
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(port, () => {
     console.log(`API up at: http://localhost:${port}`);
