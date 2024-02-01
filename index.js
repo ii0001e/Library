@@ -55,6 +55,14 @@ app.get('/books/:id', (req, res) => {
     res.send(books[req.params.id-1]);
 });
 
+app.delete('/books/:id', (req, res) => {
+    if (typeof books[req.params.id-1] === 'undefined'){
+        return res.status(404).send({error: "Book is not found"});
+    }
+    books.splice(req.params.id-1, 1);
+    res.status(204).send({error: "Not content"});
+});
+
 app.post('/libraries', (req, res) => {
     if (!req.body.name ||!req.body.address ||!req.body.openingTime ||!req.body.inactive){
         return res.status(400).send({error: "One or all params are missing"});
