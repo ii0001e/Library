@@ -93,8 +93,17 @@ app.patch('/libraries/:id', (req, res) => {
 
 
 app.get('/libraries', (req, res) => {
-    res.send(['Mustamäe','Lasnamäe','Kopli','Kristiine']);
+    res.send(libraries);
 });
+
+app.get('/libraries/:id', (req, res) => {
+    if (typeof libraries[req.params.id-1] === 'undefined'){
+        return res.status(404).send({error: "Library is not found"});
+    }
+    res.send(libraries[req.params.id-1]);
+});
+
+
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(port, () => {
