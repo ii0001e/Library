@@ -1,0 +1,208 @@
+openapi: 3.0.2
+info:
+    title: Library-API
+    version: 1.0.0
+paths:
+    /libraries:
+        get:
+            tags:
+                - libraries
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items: {}
+                            examples:
+                                List of libraries:
+                                    value:
+                                        - Mustamäe
+                                        - Lasnamäe
+                                        - Kopli
+                                        - Kristiine
+                    description: Library is found
+            summary: Get a list of all libraries.
+            description: Return a list of all libraries in API.
+        post:
+            requestBody:
+                description: 'A new library to be created '
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/new-library'
+                required: true
+            tags:
+                - library
+            parameters:
+                -
+                    name: name
+                    description: name of book
+                    schema:
+                        type: string
+                    in: query
+                    required: true
+                -
+                    name: genre_name
+                    description: genre of book
+                    schema:
+                        type: string
+                    in: query
+                    required: true
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/new-library'
+                    description: Library has been added
+                '400':
+                    content:
+                        application/json: {}
+                    description: 'One or all params are missing. '
+            summary: Create Library
+            description: Create a new library
+    '/libraries/{id}':
+        get:
+            tags:
+                - id
+            parameters:
+                -
+                    name: id
+                    schema:
+                        type: array
+                        items:
+                            type: integer
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    description: all details of library
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                    description: library not found
+            summary: Get full info of library by ID
+            description: Get full info of library by ID
+        put:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/new-library'
+                required: true
+            tags:
+                - library
+            parameters:
+                -
+                    name: id
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '203':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                    description: Updated library
+            operationId: id
+            summary: Update existing library
+            description: Update library by id
+        delete:
+            tags:
+                - library
+            parameters:
+                -
+                    name: id
+                    schema:
+                        type: array
+                        items:
+                            type: integer
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/delete-library'
+                    description: Library was deleted.
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Library /w+ was not found:
+                                    value: |-
+                                        {
+                                            "error" = "Library \\w+ was not found in library array."
+                                        }
+                    description: Library not found.
+            summary: Delete book by ID
+            description: Remove library from array by ID
+components:
+    schemas:
+        new-library:
+            description: ''
+            required:
+                - name
+                - aadress
+                - openingtime
+                - inactive
+            type: object
+            properties:
+                name:
+                    description: ''
+                    type: string
+                aadress:
+                    description: ''
+                    type: string
+                openingtime:
+                    description: ''
+                    type: string
+                inactive:
+                    description: ''
+                    type: boolean
+            example: |-
+                {
+                    id: 1, 
+                    name: 'Mustamäe raamatukogu', 
+                    address: 'Määrä 1, 123456', 
+                    openingTime: "9-17", 
+                    inactive: 1
+                    
+                }
+        error:
+            description: |-
+                {
+                    "error": "Error Message."
+                }
+            type: object
+        delete-library:
+            description: ''
+            required:
+                - id
+            type: object
+            properties:
+                id:
+                    description: |-
+                        {
+                            "id": 1
+                        }
+                    type: integer
+        update-library:
+            description: Id for library to be uptated.
+            type: object
+            properties:
+                id:
+                    description: |-
+                        {
+                            "id": 1
+                        }

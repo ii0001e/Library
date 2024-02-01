@@ -1,0 +1,40 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Library-API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/libraries": {
+            "get": {
+                "tags": [
+                    "libraries"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {}
+                                },
+                                "examples": {
+                                    "List of libraries": {
+                                        "value": [
+                                            "Mustamäe",
+                                            "Lasnamäe",
+                                            "Kopli",
+                                            "Kristiine"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Get a list of all libraries.",
+                "description": "Return a list of all libraries in API."
+            }
+        }
+    }
+}
